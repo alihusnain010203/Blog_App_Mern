@@ -5,6 +5,7 @@ const DBconnect = async () => {
         const conn = await mongoose.connect(process.env.MONGO_URI);
         console.log(`MongoDB Connected: ${conn.connection.host}`);
 
+        
         conn.connection.on("error", (err) => {
         console.log(`Mongoose default connection error: ${err}`);
         }
