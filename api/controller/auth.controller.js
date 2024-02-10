@@ -69,4 +69,51 @@ export const signin = async (req, res,next) => {
     }
 }
 
- 
+export const google=async (req,res,next)=>{
+
+    const {email,name,DPurl}=req.body;
+    try {
+        
+        const user = await User.findOne({email:email});
+
+        if(user){
+            const token = jwt.sign ({id:user._id},process.env.JWT_SECRET);
+            const {password:pass,...data}=user._doc;
+            return res.status(200).cookie('accesstoken',token,{
+                httpOnly:true,
+                secure:true,
+                sameSite:'none',
+    
+            }).json({message:'Logged in successfully',
+            user:data,
+          })
+        }
+
+       const generatePassword=(email,name)=>{
+   return email+name+process.env.JWT_SECRET;
+       }
+
+       const newUser=new User({
+           username:name,
+           email,
+           password:generatePassword(email,name),
+           DPurl
+       });
+
+         await newUser.save();
+            const token = jwt.sign ({id:newUser._id},process.env.JWT_SECRET);
+            const {password:pass,...data}=newUser._doc;
+            return res.status(200).cookie('accesstoken',token,{
+                httpOnly:true,
+                secure:true,
+                sameSite:'none',
+    
+            }).json({message:'Logged in successfully',
+            user:data,
+            })
+   
+    } catch (error) {
+        next(error)
+    }
+
+}

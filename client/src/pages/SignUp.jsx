@@ -1,9 +1,10 @@
 import { Alert, Button, Label, Spinner, TextInput } from "flowbite-react";
 import React, { useState } from "react";
-import { Link,useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import OAuth from "../components/OAuth";
 
 const SignUp = () => {
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const [data, setData] = useState({
     username: "",
     email: "",
@@ -34,23 +35,22 @@ const SignUp = () => {
 
       const result = await response.json();
 
-      if(result.success===false){
+      if (result.success === false) {
         setLoading(false);
-      return  setError(result.message);
+        return setError(result.message);
       }
 
-      
       setLoading(false);
       setData({
-        username:'',
-        email:'',
-        password:''
-      })
-      navigate('/sign-in')
+        username: "",
+        email: "",
+        password: "",
+      });
+      navigate("/sign-in");
     } catch (error) {
-      setError("Something went wrong")
+      setError("Something went wrong");
       console.log(error);
-    setLoading(false);
+      setLoading(false);
     }
   };
 
@@ -106,10 +106,21 @@ const SignUp = () => {
                 value={data.password}
               />
             </div>
-            <Button gradientDuoTone="purpleToPink" type="submit" disabled={loading}>
-              {loading?(<><Spinner size='sm'/>
-              <span className="pl-3">Loading...</span></>):'Sign Up'}
+            <Button
+              gradientDuoTone="purpleToPink"
+              type="submit"
+              disabled={loading}
+            >
+              {loading ? (
+                <>
+                  <Spinner size="sm" />
+                  <span className="pl-3">Loading...</span>
+                </>
+              ) : (
+                "Sign Up"
+              )}
             </Button>
+            <OAuth />
           </form>
           <div className="flex gap-2 mt-5 text-sm">
             <span>Have an account?</span>

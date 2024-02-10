@@ -15,8 +15,12 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    
+    DPurl:{
+        type:String,
+        default:""
+    }
 },
+
 {
     timestamps: true
 });

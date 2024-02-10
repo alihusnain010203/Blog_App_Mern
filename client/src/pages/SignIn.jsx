@@ -1,20 +1,24 @@
 import { Alert, Button, Label, Spinner, TextInput } from "flowbite-react";
 import React, { useState } from "react";
-import { Link,useNavigate } from "react-router-dom";
-import { signInStart,signInSuccess,signInFail } from "../redux/userSlice/userSlice";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  signInStart,
+  signInSuccess,
+  signInFail,
+} from "../redux/userSlice/userSlice";
 
-import { useDispatch,useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import OAuth from "../components/OAuth";
 
 const SignIn = () => {
-  const navigate=useNavigate();
-  const dispatch=useDispatch(); 
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [data, setData] = useState({
     email: "",
     password: "",
   });
 
-  const {loading,error}=useSelector(state=>state.user);
-
+  const { loading, error } = useSelector((state) => state.user);
 
   const handleChange = (e) => {
     setData({ ...data, [e.target.id]: e.target.value.trim() });
@@ -29,7 +33,7 @@ const SignIn = () => {
       dispatch(signInStart());
       const response = await fetch("http://localhost:300/api/auth/signin", {
         method: "POST",
-        headers: { 
+        headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
@@ -37,22 +41,18 @@ const SignIn = () => {
 
       const result = await response.json();
 
-      if(result.success===false){
-      return dispatch(signInFail(result.message));
-      
+      if (result.success === false) {
+        return dispatch(signInFail(result.message));
       }
 
-      
-
-      dispatch(signInSuccess(result));  
+      dispatch(signInSuccess(result));
       setData({
-        email:'',
-        password:''
-      })
-      navigate('/')
+        email: "",
+        password: "",
+      });
+      navigate("/");
     } catch (error) {
-
-    return  dispatch(signInFail("Something went wrong"));
+      return dispatch(signInFail("Something went wrong"));
     }
   };
 
@@ -78,7 +78,6 @@ const SignIn = () => {
         {/* right */}
         <div className="flex-1">
           <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
-            
             <div>
               <Label value="email"></Label>
               <TextInput
@@ -99,10 +98,21 @@ const SignIn = () => {
                 value={data.password}
               />
             </div>
-            <Button gradientDuoTone="purpleToPink" type="submit" disabled={loading}>
-              {loading?(<><Spinner size='sm'/>
-              <span className="pl-3">Loading...</span></>):'Sign In'}
+            <Button
+              gradientDuoTone="purpleToPink"
+              type="submit"
+              disabled={loading}
+            >
+              {loading ? (
+                <>
+                  <Spinner size="sm" />
+                  <span className="pl-3">Loading...</span>
+                </>
+              ) : (
+                "Sign In"
+              )}
             </Button>
+            <OAuth />
           </form>
           <div className="flex gap-2 mt-5 text-sm">
             <span>Already have an account?</span>
