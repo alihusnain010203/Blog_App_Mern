@@ -46,11 +46,11 @@ export const signin = async (req, res,next) => {
             email:email
         });
         if(!user){
-            return res.status(400).json({message:"User does not exist"})
+            return next(errorHandler(400,"User Not Found"))
         }
         const isMatch = await bcrypt.compare(password,user.password);
         if(!isMatch){
-            return res.status(400).json({message:"Invalid credentials"})
+            return next(errorHandler(400,"Invalid password"))
         }
         const token = jwt.sign ({id:user._id},process.env.JWT_SECRET);
         

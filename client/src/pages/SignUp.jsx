@@ -35,7 +35,8 @@ const SignUp = () => {
       const result = await response.json();
 
       if(result.success===false){
-        setError(result.message);
+        setLoading(false);
+      return  setError(result.message);
       }
 
       
