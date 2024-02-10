@@ -1,5 +1,6 @@
 import express from 'express';
 import dotenv from 'dotenv';
+import cors from 'cors';
 import DBconnect from './connection/DBconnect.js';
 import userRoute from './routes/user.route.js';
 import authRoute from './routes/auth.route.js'
@@ -7,8 +8,13 @@ const app = express();
 
 dotenv.config();
 
-app.use(express.json());
 
+// Use cors middleware
+app.use(cors({
+  origin: 'http://localhost:5173'
+}));
+
+app.use(express.json());
 app.use('/api/users', userRoute);
 app.use('/api/auth', authRoute);
 
