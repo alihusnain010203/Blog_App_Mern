@@ -54,7 +54,7 @@ const SignUp = () => {
   };
 
   return (
-    <div className="min-h-screen mt-20 p-5">
+    <div className="mb-10 min-h-fit mt-20 p-5">
       <div className="flex w-full justify-evenly flex-col md:flex-row gap-5">
         {/* left */}
         <div className="flex-1 flex justify-center items-center flex-col">
