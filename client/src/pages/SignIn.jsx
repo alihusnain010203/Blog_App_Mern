@@ -1,15 +1,20 @@
 import { Alert, Button, Label, Spinner, TextInput } from "flowbite-react";
 import React, { useState } from "react";
 import { Link,useNavigate } from "react-router-dom";
+import { signInStart,signInSuccess,signInFail } from "../redux/userSlice/userSlice";
+
+import { useDispatch,useSelector } from "react-redux";
 
 const SignIn = () => {
   const navigate=useNavigate();
+  const dispatch=useDispatch(); 
   const [data, setData] = useState({
     email: "",
     password: "",
   });
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(false);
+
+  const {loading,error}=useSelector(state=>state.user);
+
 
   const handleChange = (e) => {
     setData({ ...data, [e.target.id]: e.target.value.trim() });
@@ -18,14 +23,13 @@ const SignIn = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (data.username === "" || data.email === "" || data.password === "") {
-      return setError("All fields are required");
+      return dispatch(signInFail("All fields are required"));
     }
     try {
-      setLoading(true);
-      setError(null);
+      dispatch(signInStart());
       const response = await fetch("http://localhost:300/api/auth/signin", {
         method: "POST",
-        headers: {
+        headers: { 
           "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
@@ -34,23 +38,21 @@ const SignIn = () => {
       const result = await response.json();
 
       if(result.success===false){
-        setLoading(false);
-       return setError(result.message);
+      return dispatch(signInFail(result.message));
+      
       }
 
       
 
-      console.log(result);
-      setLoading(false);
+      dispatch(signInSuccess(result));  
       setData({
         email:'',
         password:''
       })
       navigate('/')
     } catch (error) {
-      setError("Something went wrong")
-      console.log(error);
-    setLoading(false);
+
+    return  dispatch(signInFail("Something went wrong"));
     }
   };
 
