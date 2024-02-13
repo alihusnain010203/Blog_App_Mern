@@ -14,9 +14,10 @@ dotenv.config();
 app.use(cors({
   origin: 'http://localhost:5173'
 }));
-app.use(cookieParser());
+
 
 app.use(express.json());
+app.use(cookieParser());
 app.use('/api/users', userRoute);
 app.use('/api/auth', authRoute);
 

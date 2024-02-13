@@ -44,6 +44,8 @@ const SignIn = () => {
       if (result.success === false) {
         return dispatch(signInFail(result.message));
       }
+     localStorage.setItem("access_token", result.access_token);
+
 
       dispatch(signInSuccess(result));
       setData({
