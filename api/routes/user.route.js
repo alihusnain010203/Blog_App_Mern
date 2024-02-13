@@ -11,6 +11,8 @@ router.get('/', (req, res) => {
 
 router.put("/update/:id",verifyUser,updateUser)
 
+
+
 router.delete("/delete/:id",verifyUser,deleteUser)
 
 

@@ -3,15 +3,20 @@ import bcryptjs from 'bcryptjs';
 import { errorHandler } from "../utils/error.js";
 
 export const updateUser = async (req, res, next) => {
-    console.log(req.user.id, req.params.id);
+    
     if (req.user.id !== req.params.id) {
       return next(errorHandler(403, 'You are not allowed to update this user'));
     }
+    
     if (req.body.password) {
-      if (req.body.password.length < 6) {
+     if(req.body.password !== ''){
+       if (req.body.password.length < 6) {
         return next(errorHandler(400, 'Password must be at least 6 characters'));
       }
       req.body.password = bcryptjs.hashSync(req.body.password, 10);
+    } else {
+      delete req.body.password; // Skip password update if it is an empty string
+    }
     }
     if (req.body.username) {
       if (req.body.username.length < 7 || req.body.username.length > 20) {
@@ -24,11 +29,6 @@ export const updateUser = async (req, res, next) => {
       }
       if (req.body.username !== req.body.username.toLowerCase()) {
         return next(errorHandler(400, 'Username must be lowercase'));
-      }
-      if (!req.body.username.match(/^[a-zA-Z0-9]+$/)) {
-        return next(
-          errorHandler(400, 'Username can only contain letters and numbers')
-        );
       }
     }
     if(req.body.email){
@@ -44,6 +44,13 @@ export const updateUser = async (req, res, next) => {
         }
     }
     try {
+      const findUser = await User.findById(req.params.id);
+      if (!findUser) {
+        return next(errorHandler(404, 'User not found'));
+      }
+      if(req.body.password==''){
+        req.body.password = findUser.password;
+      }
       const updatedUser = await User.findByIdAndUpdate(
         req.params.id,
         {

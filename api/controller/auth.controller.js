@@ -49,6 +49,7 @@ export const signin = async (req, res,next) => {
             return next(errorHandler(400,"User Not Found"))
         }
         const isMatch = await bcrypt.compare(password,user.password);
+        
         if(!isMatch){
             return next(errorHandler(400,"Invalid password"))
         }

@@ -22,6 +22,7 @@ import {
 const DashProfile = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.user);
+  const {error}=useSelector(state=>state.user);
   const [file, setFile] = useState(null);
   const [imgUrl, setImgUrl] = useState(null);
   const [imgFileUploading, setImgFileUploading] = useState(null);
@@ -93,13 +94,15 @@ const DashProfile = () => {
       );
     } catch (error) {
       setImgFileUploadingError("An error occurred during upload.");
+      
     }
   };
 
   const deleteUser=async()=>{
     dispatch(deleteUserStart());
+  
     try {
-
+      console.log(localStorage.getItem("access_token"));
       const response = await fetch(
         `http://localhost:300/api/users/delete/${user.user._id}`,
         {
@@ -108,13 +111,16 @@ const DashProfile = () => {
             "Content-Type": "application/json",
             "access_token": localStorage.getItem("access_token"),
           },
-          body:{
-            access_token: localStorage.getItem("access_token"),
-          }
+          
+          body: JSON.stringify({ access_token: localStorage.getItem("access_token") }),
         }
       );
       const result = await response.json();
+      if(result.success===false){
+        return dispatch(deleteUserFail(result.message));
+      }
       if (result === "User has been deleted") {
+       
         localStorage.clear();
         window.location.href = "/sign-in";
       }
@@ -125,10 +131,26 @@ const DashProfile = () => {
     }
   }
 
+  const signOut=async ()=>{
+   const response = await fetch('http://localhost:300/api/auth/signout',{
+      method:'GET',
+      headers:{
+        "Content-Type":"application/json",
+        "access_token":localStorage.getItem("access_token")
+      }
+    });
+    const result = await response.json();
+    if(result.message === 'Signout Successful'){
+      localStorage.clear();
+      window.location.href = '/sign-in';
+    }
+  }
+
   const submitForm = async (e) => {
     e.preventDefault();
     try {
       dispatch(updateUserStart());
+      console.log(user.user._id);
       const response = await fetch(
         `http://localhost:300/api/users/update/${user.user._id}`,
         {
@@ -146,10 +168,15 @@ const DashProfile = () => {
         }
       );
       const result = await response.json();
+      if(result.success===false){
+        return dispatch(updateUserFail(result.message));
+      }
       dispatch(
         updateUserSuccess({
           user: {
+            _id: user.user._id,
             username: formData.username,
+            password: formData.password,
             email: formData.email,
             DPurl: formData.DPurl,
           },
@@ -225,7 +252,7 @@ const DashProfile = () => {
         />
         <TextInput
           onChange={handleChange}
-          type="password"
+         type="password"
           id="password"
           placeholder="Password"
         />
@@ -237,11 +264,13 @@ const DashProfile = () => {
         <span className=" cursor-pointer" onClick={()=>{
           deleteUser();
         }}>Delete Account</span>
-        <span className=" cursor-pointer" onClick={()=>{
-          localStorage.clear();
-          window.location.href = '/sign-in';
-        }}>Sign Out</span>
+        <span className=" cursor-pointer" onClick={signOut}>Sign Out</span>
       </div>
+      {
+       error && <Alert color="failure" className="mt-2" outline>
+        {error}
+      </Alert>
+      }
     </div>
   );
 };
