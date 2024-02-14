@@ -18,11 +18,12 @@ import {
   deleteUserStart,
   deleteUserSuccess,
 } from "../redux/userSlice/userSlice";
+import { Link } from "react-router-dom";
 
 const DashProfile = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.user);
-  const {error}=useSelector(state=>state.user);
+  const {error ,loading}=useSelector(state=>state.user);
   const [file, setFile] = useState(null);
   const [imgUrl, setImgUrl] = useState(null);
   const [imgFileUploading, setImgFileUploading] = useState(null);
@@ -179,6 +180,7 @@ const DashProfile = () => {
             password: formData.password,
             email: formData.email,
             DPurl: formData.DPurl,
+            isAdmin: user.user.isAdmin,
           },
         })
       );
@@ -256,9 +258,14 @@ const DashProfile = () => {
           id="password"
           placeholder="Password"
         />
-        <Button type="submit" gradientDuoTone="purpleToBlue" outline>
-          Update
+        <Button type="submit" gradientDuoTone="purpleToBlue" outline disabled={loading}>
+          {loading ? "Loading..." : "Update"}
         </Button>
+        {
+          user.user.isAdmin && <Link to='/create-post'> <Button type="submit" className="w-full" gradientDuoTone="purpleToPink" >
+          Create a Post
+        </Button></Link>
+        }
       </form>
       <div className="text-red-500 flex justify-between mt-5">
         <span className=" cursor-pointer" onClick={()=>{

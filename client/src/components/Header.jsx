@@ -11,6 +11,20 @@ const Header = () => {
 
     const {user}=useSelector(state=>state.user);
     const path=useLocation().pathname;
+    const signOut=async ()=>{
+      const response = await fetch('http://localhost:300/api/auth/signout',{
+         method:'GET',
+         headers:{
+           "Content-Type":"application/json",
+           "access_token":localStorage.getItem("access_token")
+         }
+       });
+       const result = await response.json();
+       if(result.message === 'Signout Successful'){
+         localStorage.clear();
+         window.location.href = '/sign-in';
+       }
+     }
   return (
     <Navbar className='border-b-2'>
        <Link to="/" className='self-center whitespace-nowrap text-sm sm:text-xl font-semibold dark:text-white'>
@@ -34,7 +48,7 @@ const Header = () => {
    }} >
 <FaMoon/>
    </Button>
-   <Link  to="sign-in">
+   <Link  to={user ? '/dashboard?tab=profile' : 'sign-in'}>
     {
         user ? (<>
         <Dropdown
@@ -42,7 +56,7 @@ const Header = () => {
         inline
         label={<Avatar
         alt='user'
-        img={user.DPurl}
+        img={user.user.DPurl || 'https://via.placeholder.com/150'}
         rounded
         />}
         >
@@ -53,9 +67,9 @@ const Header = () => {
 
 
 </DropdownHeader>
-<Link to='/dashboard?=tab=profile'>
+<Link to='/dashboard?tab=profile'>
 <DropdownItem>Profile</DropdownItem></Link>
-<DropdownItem>Sign Out</DropdownItem>
+<DropdownItem onClick={signOut}>Sign Out</DropdownItem>
         </Dropdown>
         </>) :<Button className='' gradientDuoTone={'purpleToBlue'} outline>
         Sign In

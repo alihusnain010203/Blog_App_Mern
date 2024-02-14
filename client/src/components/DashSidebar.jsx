@@ -20,18 +20,16 @@ const DashSidebar = () => {
     <Sidebar className="w-full">
       <SidebarItems>
         <SidebarItemGroup>
-          <Link to="/dashboard?tab=profile">
-            <SidebarItem
-              active={tab == "profile"}
-              icon={HiUser}
-              label={"User"}
-              labelColor="dark"
-              as="div"
-            >
-              Profile
-            </SidebarItem>
-          </Link>
-
+          {" "}
+          <SidebarItem
+            active={tab == "profile"}
+            icon={HiUser}
+            label={"User"}
+            labelColor="dark"
+            as={'div'}
+          >
+            <Link to="/dashboard?tab=profile">Profile</Link>
+          </SidebarItem>
           <SidebarItem icon={HiArrowSmRight} classname="cursor-pointer">
             SignOut
           </SidebarItem>
