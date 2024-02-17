@@ -1,13 +1,10 @@
 import express from 'express';
-import { updateUser,deleteUser } from '../controller/user.controller.js';
+import { updateUser,deleteUser, getAllUsers } from '../controller/user.controller.js';
 import { verifyUser } from '../utils/verifyUser.js';
 
 const router = express.Router();
 
-router.get('/', (req, res) => {
-    res.send('Hello World!');
-    }
-);
+router.get("/getallusers",verifyUser,getAllUsers)
 
 router.put("/update/:id",verifyUser,updateUser)
 
