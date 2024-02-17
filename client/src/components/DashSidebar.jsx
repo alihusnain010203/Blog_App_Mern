@@ -13,7 +13,6 @@ const DashSidebar = () => {
   const { user } = useSelector((state) => state.user);
   const location = useLocation();
   const [tab, setTab] = useState("");
-console.log(user);
   useEffect(() => {
     const urlParams = new URLSearchParams(location.search);
     const tab = urlParams.get("tab");

@@ -174,7 +174,7 @@ const DashPosts = () => {
                   </TableCell>
                   <TableCell>
                     <Link
-                      to="/edit-post"
+                      to={`/update-post/${post._id}`}
                       className="text-orange-500 font-bold capitalize hover:underline border-2 border-gray-500 rounded-md p-1"
                     >
                       Edit

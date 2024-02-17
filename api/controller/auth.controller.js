@@ -1,6 +1,7 @@
 import User from '../model/user.model.js';
 import bcrypt from 'bcryptjs'
 import { errorHandler } from '../utils/error.js';
+import sendMail from '../utils/mailer.js';
 import jwt from 'jsonwebtoken';
 export const signup = async (req, res,next) => {
     const {username,email,password}=req.body;
@@ -27,6 +28,10 @@ export const signup = async (req, res,next) => {
             password:hashedPassword
         });
         await newUser.save();
+
+        const message = `Welcome to Tech's OverFlow Blog ${username}!`;
+        const subject = "Welcome to Tech's OverFlow Blog";
+         await  sendMail(email,subject,message);
         return res.status(201).json({message:"User created successfully"})
 
      } catch (error) {
