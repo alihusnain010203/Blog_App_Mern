@@ -4,6 +4,7 @@ import DashSidebar from "../components/DashSidebar";
 import DashProfile from "../components/DashProfile";
 import DashPosts from "../components/DashPosts";
 import DashUsers from "../components/DashUsers";
+import Overview from "../components/Overview";
 const Dashboard = () => {
   const location = useLocation();
   const [tab, setTab] = useState("");
@@ -21,6 +22,7 @@ const Dashboard = () => {
       </div>
       {/* Profile */}
       <div className=" md:w-[calc(100vw-244px)]">
+        {tab === "overview" && <Overview/>}
         {tab === "profile" && <DashProfile />}
         {tab === "posts" && <DashPosts />}
         {tab === "users" && <DashUsers/>}

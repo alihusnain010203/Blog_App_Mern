@@ -112,7 +112,7 @@ export default function DashUsers() {
                   </Table.Cell>
                   <Table.Cell>
                     <img
-                      src={user.profilePicture}
+                      src={user.DPurl||"https://thumbs.dreamstime.com/b/vector-illustration-avatar-dummy-logo-collection-image-icon-stock-isolated-object-set-symbol-web-137160339.jpg"}
                       alt={user.username}
                       className="w-10 h-10 object-cover bg-gray-500 rounded-full"
                     />

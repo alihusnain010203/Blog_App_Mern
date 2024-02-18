@@ -5,7 +5,7 @@ import {
   SidebarItemGroup,
   SidebarItems,
 } from "flowbite-react";
-import { HiUser, HiArrowSmRight, HiPencil } from "react-icons/hi";
+import { HiUser, HiArrowSmRight, HiPencil,HiDatabase } from "react-icons/hi";
 import { Link, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 const DashSidebar = () => {
@@ -22,6 +22,17 @@ const DashSidebar = () => {
       <SidebarItems>
         <SidebarItemGroup>
           {" "}
+          {user.user.isAdmin&&<Link to="/dashboard?tab=overview">
+            <SidebarItem
+              active={tab == "overview"}
+              icon={HiDatabase}
+              label="Admin"
+              labelColor="dark"
+              as={"div"}
+            >
+              Overview
+            </SidebarItem>
+          </Link>}
           <Link to="/dashboard?tab=profile">
             {" "}
             <SidebarItem
