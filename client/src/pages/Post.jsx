@@ -13,12 +13,11 @@ export default function Post() {
   const [post, setPost] = useState(null);
   const [recentPosts, setRecentPosts] = useState(null);
 
-  console.log(recentPosts);
   const fetchRecentPosts = async () => {
     try {
         const res = await fetch(`http://localhost:300/api/posts/getallpost?limit=3`);
         const data = await res.json();
-        console.log(data);
+    
         if (res.ok) {
           setRecentPosts(data.data);
         }
@@ -56,7 +55,7 @@ export default function Post() {
     fetchRecentPosts();
   }, [postSlug]);
 
-  console.log(recentPosts);
+
 
 
   if (loading)

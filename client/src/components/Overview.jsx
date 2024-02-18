@@ -22,7 +22,7 @@ export default function DashboardComp() {
       try {
         const res = await fetch('http://localhost:300/api/users/getallusers?limit=5');
         const data = await res.json();
-        console.log(data);
+       
         if (res.ok) {
           setUsers(data.users);
           setTotalUsers(data.totalUsers);

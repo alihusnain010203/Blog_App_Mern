@@ -7,6 +7,7 @@ import authRoute from './routes/auth.route.js'
 import postRoute from './routes/post.route.js';
 import cookieParser from 'cookie-parser';
 import commentRoute from './routes/comment.route.js';
+import path from 'path';
 const app = express();
 
 dotenv.config();
@@ -25,6 +26,11 @@ app.use('/api/auth', authRoute);
 app.use('/api/posts', postRoute);
 app.use('/api/comments', commentRoute);
 
+app.use(express.static(path.join(__dirname, '/client/dist')));
+
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname,'client','dist','index.html'));
+    });
 
 app.use((err,req,res,next)=>{
     const statusCode= err.statusCode||500;
@@ -42,6 +48,7 @@ app.use((err,req,res,next)=>{
 
 DBconnect();
 
+const __dirname = path.resolve();
 app.listen(process.env.PORT, () => {
     console.log(`Server is running on port ${process.env.PORT}`);
 });

@@ -14,12 +14,7 @@ const Comment = ({ comment, onLike,onDelete }) => {
   const [user, setUser] = useState({});
   const [isEditing, setIsEditing] = useState(false);
   const [editedContent, setEditedContent] = useState(comment.content);
-  const handleEdit = () => {
-    console.log("edit");
-  };
-  const handleSave = () => {
-    console.log("save");
-  };
+  
   const getUser = async () => {
     try {
       const res = await fetch(

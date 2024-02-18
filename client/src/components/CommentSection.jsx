@@ -118,7 +118,7 @@ const CommentSection = ({ postId }) => {
   useEffect(() => {
     getComments();
   }, [postId]);
-  console.log(comments);
+
   return (
     <div className="max-w-2xl mx-auto">
       {currentUser ? (
