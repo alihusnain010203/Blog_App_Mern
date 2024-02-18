@@ -12,9 +12,12 @@ import PrivateRoute from "./components/PrivateRoute";
 import CreatePost from "./pages/CreatePost";
 import UpdatePost from "./pages/updatePost";
 import OnlyAdminPrivateRoute from "./components/OnlyAdminPrivateRoute";
+import Post from "./pages/Post";
+import ScrollToTop from "./components/ScrollToTop";
 export default function App() {
   return (
     <Router>
+      <ScrollToTop/>
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
@@ -26,10 +29,11 @@ export default function App() {
         </Route>
         <Route element={<OnlyAdminPrivateRoute />}>
           <Route path="/create-post" element={<CreatePost />} />
-          <Route path="/update-post/:postId" element={<UpdatePost/>} />
+          <Route path="/update-post/:postId" element={<UpdatePost />} />
         </Route>
 
         <Route path="/projects" element={<Projects />} />
+        <Route path="/post/:postSlug" element={<Post />} />
       </Routes>
       <Footer />
     </Router>

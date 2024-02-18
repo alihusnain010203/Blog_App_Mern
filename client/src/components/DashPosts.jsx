@@ -156,7 +156,7 @@ const DashPosts = () => {
                     </Link>
                   </TableCell>
                   <TableCell className=" font-bold">
-                    <Link to={`post/${post.slug}`}>{post.title}</Link>
+                    <Link to={`/post/${post.slug}`}>{post.title}</Link>
                   </TableCell>
                   <TableCell className=" font-semibold capitalize">
                     {post.category}

@@ -72,7 +72,7 @@ export const updateUser = async (req, res, next) => {
   
   export const deleteUser = async (req, res, next) => {
     const userId = req.params.id;
-    if (req.user.id !== userId) {
+    if ( !req.user.isAdmin && req.user.id !== userId) {
       return next(errorHandler(403, 'You are not allowed to delete this user'));
     }
     try {
@@ -88,9 +88,6 @@ export const updateUser = async (req, res, next) => {
   // get all users
   export const getAllUsers = async (req, res, next) => {
     try {
-      if(!req.user.isAdmin){
-        return next(errorHandler(403, 'You are not allowed to see all users'));
-      }
     
       const startIndex=parseInt(req.query.startIndex||0);
       const limit=parseInt(req.query.limit||9);
@@ -117,6 +114,19 @@ export const updateUser = async (req, res, next) => {
 
     
 
+    } catch (error) {
+      next(error);
+    }
+  };
+
+  export const getUser = async (req, res, next) => {
+    try {
+      const user = await User.findById(req.params.userId);
+      if (!user) {
+        return next(errorHandler(404, 'User not found'));
+      }
+      const { password, ...rest } = user._doc;
+      res.status(200).json(rest);
     } catch (error) {
       next(error);
     }
