@@ -12,7 +12,7 @@ const app = express();
 
 dotenv.config();
 
-
+const __dirname = path.resolve();
 // Use cors middleware
 app.use(cors({
   origin: 'http://localhost:5173'
@@ -48,7 +48,7 @@ app.use((err,req,res,next)=>{
 
 DBconnect();
 
-const __dirname = path.resolve();
+
 app.listen(process.env.PORT, () => {
     console.log(`Server is running on port ${process.env.PORT}`);
 });
