@@ -7,11 +7,10 @@ export default function Search() {
   const [sidebarData, setSidebarData] = useState({
     searchTerm: "",
     sort: "desc",
-    category: "uncategorized",
+    category: null,
   });
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [showMore, setShowMore] = useState(false);
 
   const location = useLocation();
 
@@ -43,11 +42,7 @@ export default function Search() {
         const data = await res.json();
         setPosts(data.data);
         setLoading(false);
-        if (data.data.length === 9) {
-          setShowMore(true);
-        } else {
-          setShowMore(false);
-        }
+        
       }
     };
     fetchPosts();
@@ -62,7 +57,7 @@ export default function Search() {
       setSidebarData({ ...sidebarData, sort: order });
     }
     if (e.target.id === "category") {
-      const category = e.target.value || "uncategorized";
+      const category = e.target.value || null;
       setSidebarData({ ...sidebarData, category });
     }
   };
@@ -72,31 +67,14 @@ export default function Search() {
     const urlParams = new URLSearchParams(location.search);
     urlParams.set("searchTerm", sidebarData.searchTerm);
     urlParams.set("sort", sidebarData.sort);
-    urlParams.set("category", sidebarData.category||"uncategorized");
+    if (sidebarData.category) {
+      urlParams.set("category", sidebarData.category);
+    } else {
+      urlParams.delete("category");
+    }
     const searchQuery = urlParams.toString();
     navigate(`/search?${searchQuery}`);
   };
-
-//   const handleShowMore = async () => {
-//     const numberOfPosts = posts.length;
-//     const startIndex = numberOfPosts;
-//     const urlParams = new URLSearchParams(location.search);
-//     urlParams.set("startIndex", startIndex);
-//     const searchQuery = urlParams.toString();
-//     const res = await fetch(`http://localhost:300/api/posts/getallpost?${searchQuery}`);
-//     if (!res.ok) {
-//       return;
-//     }
-//     if (res.ok) {
-//       const data = await res.json();
-//       setPosts([...posts, ...data.data]);
-//       if (data.data.length === 9) {
-//         setShowMore(true);
-//       } else {
-//         setShowMore(false);
-//       }
-//     }
-//   };
 
   return (
     <div className="flex flex-col md:flex-row">
@@ -129,6 +107,7 @@ export default function Search() {
               id="category"
             >
               <option>Select</option>
+              <option value="uncategorized">uncategorized</option>
               <option value="reactjs">React.js</option>
               <option value="nextjs">Next.js</option>
               <option value="javascript">JavaScript</option>
@@ -151,14 +130,7 @@ export default function Search() {
           {!loading &&
             posts &&
             posts.map((post) => <PostCard key={post._id} post={post} />)}
-          {/* {showMore && (
-            <button
-              onClick={handleShowMore}
-              className="text-teal-500 text-lg hover:underline p-7 w-full"
-            >
-              Show More
-            </button>
-          )} */}
+         
         </div>
       </div>
     </div>

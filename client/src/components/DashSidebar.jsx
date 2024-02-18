@@ -22,7 +22,8 @@ const DashSidebar = () => {
       <SidebarItems>
         <SidebarItemGroup>
           {" "}
-          {user.user.isAdmin&&<Link to="/dashboard?tab=overview">
+          {user.user.isAdmin&&
+          <Link to="/dashboard?tab=overview">
             <SidebarItem
               active={tab == "overview"}
               icon={HiDatabase}
@@ -50,7 +51,8 @@ const DashSidebar = () => {
               <SidebarItem
                 icon={HiPencil}
                 active={tab == "posts"}
-                classname="cursor-pointer"
+                className="cursor-pointer"
+                as={"div"}
               >
                 Posts
               </SidebarItem>
@@ -61,13 +63,14 @@ const DashSidebar = () => {
               <SidebarItem
                 icon={HiUser}
                 active={tab == "users"}
-                classname="cursor-pointer"
+               className="cursor-pointer"
+                as={"div"}
               >
                 Users
               </SidebarItem>
             </Link>
           )}
-          <SidebarItem icon={HiArrowSmRight} classname="cursor-pointer">
+          <SidebarItem icon={HiArrowSmRight} className="cursor-pointer">
             SignOut
           </SidebarItem>
         </SidebarItemGroup>

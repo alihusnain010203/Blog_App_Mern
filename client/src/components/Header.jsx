@@ -65,8 +65,8 @@ const Header = () => {
         />
        </form>
        
-       <div className='flex gap-2 md:order-2'>
-   <Button className='w-12 h-10 hidden sm:inline' color='gray' pill onClick={()=>{
+       <div className='flex gap-2 md:order-2 justify-between w-full'>
+   <Button className='w-12 h-10 ' color='gray' pill onClick={()=>{
     dispatch(toogleTheme()); 
    }} >
 <FaMoon/>
