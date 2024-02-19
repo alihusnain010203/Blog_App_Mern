@@ -12,6 +12,7 @@ const app = express();
 
 dotenv.config();
 
+
 const __dirname = path.resolve();
 // Use cors middleware
 app.use(cors({
